@@ -1,3 +1,17 @@
+from quant_risk.statistics import financial_ratios as ratios
+from quant_risk.portfolio import portfolio as port
+from quant_risk.portfolio.portfolio import MeanVariance
+from quant_risk.utils import plot
+from quant_risk.utils import fetch_data as fetch_data
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import yfinance as yf
+import datetime as dt
+from scipy.optimize import minimize
+from sklearn.linear_model import LinearRegression
+
 def minimise_volatility(target_return, er, cov):
     '''
     Minimise volatility function will give a SINGLE array of weights for the assets
@@ -82,3 +96,55 @@ def resize_data(dataframe,rebal_freq = 5):
     Resizeddata = pd.DataFrame(Resizeddf.values(), index = Resizeddf.keys(),
                                columns = dataframe.columns)        
     return Resizeddata
+
+def min_vol_strategy(start_dt,data,lags = 252,rebals_per_year=52,target_return = 0.06):
+    '''
+    This function will run the minimise volatility function shown above iteratively over time.
+    Intuitively, we feed in more data day by day to optimise the our given function, in this case minimise the volatility of our portfolio.
+    This function will perform the iterative function while performing the backtest and provide optimal weights for the portfolio on an iterative basis
+    '''
+    data.index = pd.to_datetime(data.index, format = '%Y%m%d')
+    data = data[start_dt:]
+    
+    data = resize_data(data,rebal_freq = int(252/rebals_per_year))
+        
+    
+    returns = ((data-data.shift(1))/data.shift(1)).fillna(0)
+    A_weights ={}
+
+    counter = 0
+    for i in data.index:
+        counter+=1
+        start = i-dt.timedelta(days = lags)
+        
+        if counter >=2 and counter < lags:
+            ann_ret = ratios.annualised_returns(returns[start_dt:i],rebals_per_year)
+            covv = returns[start:i].cov()
+            w = minimise_volatility(target_return,ann_ret,covv)
+            A_weights[i]=w
+            
+        elif counter >= lags:
+            try:
+                ann_ret = ratios.annualised_returns(returns[start:i],rebals_per_year)
+                covv = returns[start:i].cov()
+                w = minimise_volatility(target_return,ann_ret,covv)
+                A_weights[i]=w
+            except:
+                adj_start = i-dt.timedelta(days = (lags+4))
+                ann_ret = ratios.annualised_returns(returns[adj_start:i],rebals_per_year)
+                covv = returns[adj_start:i].cov()
+                w = minimise_volatility(target_return,ann_ret,covv)
+                A_weights[i]=w
+            
+    weights = pd.DataFrame(A_weights.values(),index = A_weights.keys(),columns = data.columns)
+    return weights
+
+def backtest_plot(prices_ts, weights_ts):
+    '''
+    This function will help us plot the backtested data and show the returns over time
+    '''
+    prices_ts = prices_ts.loc[weights_ts.index]
+    
+    returns = ((prices_ts-prices_ts.shift())/prices_ts.shift()).fillna(0)
+    returns = 1+returns
+    return (returns*weights_ts).sum(axis=1).cumprod().plot(figsize = (14,8), title = 'Minimum Variance Portfolio Returns')
