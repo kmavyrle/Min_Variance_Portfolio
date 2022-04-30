@@ -1,4 +1,4 @@
-# Min_Variance_Portfolio-in-progress-
+# Min_Variance_Portfolio
 Testing out the minimum variance portfolio using Markowitz Mean Variance portfolio theory
 ## Introduction
 This project aims to apply the Markowitz Mean Variance portfolio theory using the global minimum variance portfolio. Asset prices are extracted from yahoo finance using the yfinance api.
