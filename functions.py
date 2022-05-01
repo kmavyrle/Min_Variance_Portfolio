@@ -90,7 +90,7 @@ def minimise_volatility_full(target_return, er, cov):
                         bounds = bounds)
     return weights_
 
-def min_vol_strategy(start_dt,data,lags = 252,rebals_per_year=52,target_return = 0.06):
+def min_vol_strategy(start_dt,data,lags = 252,rebals_per_year=52,target_return = 0.1):
     '''
     This function will run the minimise volatility function shown above iteratively over time.
     Intuitively, we feed in more data day by day to optimise the our given function, in this case minimise the volatility of our portfolio.
