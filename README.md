@@ -11,17 +11,16 @@ The investment universe used consists of different indices from various asset cl
 6. Hang Seng Index
 7. Russell 2000
 8. VIX: Volatility Proxy
-9. Bitcoin
-10. Dow Jones
-11. Nasdaq
-12. Kospi Index
-13. TLT: 30+ Year US Treasury Proxy
-14. TLH: 10 Year US Treasury Proxy
-15. SHY: 3 year US Treasury Proxy
+9. Dow Jones
+10. Nasdaq
+11. Kospi Index
+12. TLT: 30+ Year US Treasury Proxy
+13. TLH: 10 Year US Treasury Proxy
+14. SHY: 3 year US Treasury Proxy
 
 ## Built With
 Mainly built with Python and Jupyter notebook. Libraries used include scipy.optimize, matplotlib, yfinance api, datetime, pandas and numpy. The NTU QAM club's quant risk package was also used for
 performing more advanced statistical analysis
 
---TBC
+## Step I: Pull daily closing prices for the various indices and asset class proxies using yahoo finance API.
 
