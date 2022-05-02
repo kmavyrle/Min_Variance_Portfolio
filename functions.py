@@ -1,3 +1,4 @@
+# This file contains all the required functions to perform our analysis. File will be imported into our jupyter notebook to utilise the functions
 from quant_risk.statistics import financial_ratios as ratios
 from quant_risk.portfolio import portfolio as port
 from quant_risk.portfolio.portfolio import MeanVariance
