@@ -46,7 +46,7 @@ Functions are coded out in the functions.py file while annualised returns and an
 
 ### Portfolio Returns and Portfolio Variance Functions(Not Annualised)
 ![image](https://user-images.githubusercontent.com/85161103/166207462-54260c65-0874-4638-8ff4-d4042a3e98e3.png)
-### Minimise volatility Function Produces the Weights of the Minimum Variance Portfolio given a target return.
+### Minimise volatility function produces the weights of the minimum variance portfolio given a specified target return.
 ![image](https://user-images.githubusercontent.com/85161103/166207611-42006eaf-8404-4ca6-92a2-7622ccf4ec34.png)
 
 ## Step IV: Plot out the Efficient Frontier
